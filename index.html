@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Royal Fashion</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Royal Fashion</h1>
+  <p>Traditional Women's Wear</p>
+</header>
+
+<!-- ADMIN PANEL -->
+<div class="admin">
+  <h2>Add Product (Permanent)</h2>
+  <input id="name" placeholder="Product Name">
+  <input id="price" placeholder="Price">
+  <input id="img" placeholder="Image URL">
+  <button onclick="addProduct()">Save Product</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="gallery" id="products"></div>
+
+<a class="whatsapp" href="https://wa.me/917007928775">💬</a>
+
+<script src="firebase.js"></script>
+
+<script>
+function addProduct(){
+  const name = nameInput.value;
+  const price = priceInput.value;
+  const img = imgInput.value;
+
+  db.collection("products").add({
+    name:name,
+    price:price,
+    img:img
+  }).then(()=>{
+    alert("Product saved permanently ✅");
+  });
+}
+
+db.collection("products").onSnapshot(snapshot=>{
+  products.innerHTML="";
+  snapshot.forEach(doc=>{
+    const p = doc.data();
+    products.innerHTML += `
+    <div class="product">
+      <img src="${p.img}">
+      <h4>${p.name}</h4>
+      <p>₹${p.price}</p>
+      <a href="https://wa.me/917007928775?text=I%20want%20${p.name}" class="btn">Buy Now</a>
+    </div>`;
+  });
+});
+</script>
+
+</body>
+</html>
